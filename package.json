@@ -4,13 +4,14 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon bot.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.5.3",
-    "node-watch": "^0.7.3"
+    "chokidar": "^3.5.3",
+    "discord.js": "^12.5.3"
   }
 }

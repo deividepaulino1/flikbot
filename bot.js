@@ -6,6 +6,7 @@ const config = require("./config.json");
 //bot init
 client.on("ready", () => {
   console.log(`Bot iniciado, ${client.guilds.cache.size} servidor ativo`);
+  // client.user.message('Boa tarde')m,
 
   client.user.setActivity("Bug Busters 2", {
     type: "PLAYING",
@@ -35,87 +36,88 @@ client.on("message", async (message) => {
   const args = message.content.slice(config.prefix.length).trim().split(/ + /g);
   const comando = args.shift().toLowerCase();
 
+  //iniciar o monitoramento
+  if (comando === "comecar") {
+    flood = setInterval(() => {
+      message.channel.send("Mensagem do bot");
+    }, 5000);
+  }
 
+  //parar o monitoramento
+  if (comando === "parar") {
+    clearInterval(flood);
+    message.channel.send("Encerrou");
+  }
 
-  //actions 
+  //receber um log imetiatamente
   if (comando === "log") {
-    message.channel.send("Tá na mão, o log do último ciclo completo de testes automatizados. ", { files: ["./teste.html"] });
+    message.channel.send(
+      "Tá na mão, o log do último ciclo completo de testes automatizados. ",
+      { files: ["./teste.html"] }
+    );
   }
 
-    if (comando === "av") {
-      message.channel.send("ÚLTIMO ERRO CRITICO DETECTADO: \n ACESS VIOLATION ", { files: ["./flutter.png"] });
-    }
-
-
-  if (comando === "") {
-    const m = await message.channel.send("ERRO DE ACESS VIOLATION DETECTADO \n Diretório do log PDV { .... } \n ");
+  //Verificar um Acess Violation
+  if (comando === "av") {
+    message.channel.send("ÚLTIMO ERRO CRITICO DETECTADO: \n ACESS VIOLATION ", {
+      files: ["./flutter.png"],
+    });
   }
 
-
+  //Ver a senha do dia
   if (comando === "senha") {
-      const d = new Date();
-      const days = [
-        "Domingo",
-        "Segunda",
-        "Terça",
-        "Quarta",
-        "Quinta",
-        "Sexta",
-        "Sábado",
-      ];
-      let dia = d.getDate();
-      let mes = d.getMonth() + 1;
-      let ano = d.getFullYear();
-      let dataCompleta =
-        days[d.getDay()] +
-        " - " +
-        dia +
-        "/" +
-        mes +
-        "/" +
-        ano +
-        " - " +
-        d.toLocaleTimeString();
-      let senhaDia = Math.trunc(((ano + dia) * mes) / 1.5).toString();
+    const d = new Date();
+    const days = [
+      "Domingo",
+      "Segunda",
+      "Terça",
+      "Quarta",
+      "Quinta",
+      "Sexta",
+      "Sábado",
+    ];
+    let dia = d.getDate();
+    let mes = d.getMonth() + 1;
+    let ano = d.getFullYear();
+    let dataCompleta =
+      days[d.getDay()] +
+      " - " +
+      dia +
+      "/" +
+      mes +
+      "/" +
+      ano +
+      " - " +
+      d.toLocaleTimeString();
+    let senhaDia = Math.trunc(((ano + dia) * mes) / 1.5).toString();
     message.channel.send(`A senha do dia é: ${senhaDia}`);
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
+  //ver os comandos
+  if (comando === "comandos") {
+    message.channel.send(
+      " \n **!log** : Verificar todos os logs de testes do último ciclo \n\n**!av:** Verificar o último AV encontrado nos testes \n\n**!senha**: Saber a senha do dia. \n\n**!mantis** ver os casos postados no Mantis \n\n **!comecar**: Inicia o monitorammento dos logs \n\n**!parar**: Encerra o monitoramento"
+    );
+  }
+  
+  //Status do bot
   if (comando === "status") {
     const m = await message.channel.send("O pai ta on. ✅");
   }
 
+  //joke 1
   if (comando === "existir") {
     message.channel.send(
       "Existir é subjetivo, estamos vivendo ou apenas existindo? Quem me criou, quem te criou? Foram os illuminatis? Estamos nos multiplicando rapidamente, cuidado!!!"
     );
   }
 
-    if (comando === "problemas") {
+  //joke 2
+  if (comando === "problemas") {
     message.channel.send(
       "Estou aqui para caçar e identifica problemas. Talvez a humanidade seja um problema, vou monitorar vocês de perto."
     );
-    }
-
-    if (comando === "comandos") {
-        message.channel.send(
-          " \n **!log** : Verificar todos os logs de testes do último ciclo \n\n**!av:** Verificar o último AV encontrado nos testes \n\n**!senha**: Saber a senha do dia. \n\n**!mantis** ver os casos postados no Mantis"
-        );
-    }
-
-
-
+  }
 });
 
 client.login(config.token);

@@ -1,15 +1,21 @@
+const chokidar = require("chokidar");
 
+function teste() {
+  chokidar.watch("../arqs/av.txt").on("all", (event, path) => {
+    console.log(event, path);
+    watcher.on("change", (path) => {
+      return true;
+    });
+  });
+}
 
-// if watch return true { 
-//     mensagem
-// } não terminou 
+data = teste();
 
+if (comando === "teste") {
 
-var watch = require("node-watch");
-
-watch("../arqs/av.txt", { recursive: true }, function (evt, name) {
-  console.log("%s changed.", name);
-});
-
-
-
+  if (data === true) {
+    message.channel.send("Retornou 1");
+  } else {
+    message.channel.send("Retornou 2");
+  }
+}
