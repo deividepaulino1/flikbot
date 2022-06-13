@@ -1,7 +1,11 @@
+const GerenciarArquivo = require("./comandos/gerenciarArquivo.js");
 const Discord = require("discord.js");
 const { moveMessagePortToContext } = require("worker_threads");
 const client = new Discord.Client();
 const config = require("./config.json");
+var fs = require("fs");
+
+let arquivo = new GerenciarArquivo();
 
 //bot init
 client.on("ready", () => {
@@ -51,10 +55,29 @@ client.on("message", async (message) => {
 
   //receber um log imetiatamente
   if (comando === "log") {
-    message.channel.send(
-      "Tá na mão, o log do último ciclo completo de testes automatizados. ",
-      { files: ["./teste.html"] }
-    );
+
+         var today = new Date();
+         var date =
+           today.getFullYear() +
+           "-" +
+           (today.getMonth() + 1) +
+           "-" +
+           today.getDate();
+
+
+    if (fs.existsSync("./arqs/av.txt")) {
+      arquivo.renomearLog();
+      await message.channel.send(
+        "Tá na mão, o log do último ciclo completo de testes automatizados. ",
+        { files: [`./arqs/${date}.txt`] }
+      );
+
+      arquivo.deletarLog();
+    } else {
+      message.channel.send(
+        "Log ainda não está disponível, Ainda não terminou o teste "
+      );
+    }
   }
 
   //Verificar um Acess Violation
@@ -99,7 +122,7 @@ client.on("message", async (message) => {
       " \n **!log** : Verificar todos os logs de testes do último ciclo \n\n**!av:** Verificar o último AV encontrado nos testes \n\n**!senha**: Saber a senha do dia. \n\n**!mantis** ver os casos postados no Mantis \n\n **!comecar**: Inicia o monitorammento dos logs \n\n**!parar**: Encerra o monitoramento"
     );
   }
-  
+
   //Status do bot
   if (comando === "status") {
     const m = await message.channel.send("O pai ta on. ✅");
