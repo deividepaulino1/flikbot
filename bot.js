@@ -42,28 +42,51 @@ client.on("message", async (message) => {
 
   //iniciar o monitoramento
   if (comando === "comecar") {
+    message.channel.send("Monitoramento de testes iniciado com sucesso! 😎 ");
     flood = setInterval(() => {
-      message.channel.send("Mensagem do bot");
-    }, 5000);
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+
+      if (fs.existsSync("./arqs/av.txt")) {
+        arquivo.renomearLog();
+
+        message.channel.send(
+          "Tá na mão, o log do último ciclo completo de testes automatizados. ",
+          { files: [`./arqs/${date}.txt`] }
+        );
+
+        setTimeout(() => {
+          arquivo.deletarLog();
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      } else {
+        message.channel.send(
+          "Log ainda não está disponível, Ainda não terminou o teste "
+        );
+      }
+    }, 20000);
   }
 
   //parar o monitoramento
   if (comando === "parar") {
     clearInterval(flood);
-    message.channel.send("Encerrou");
+    message.channel.send("Encerrou o monitoramento de testes 🔚");
   }
 
   //receber um log imetiatamente
   if (comando === "log") {
-
-         var today = new Date();
-         var date =
-           today.getFullYear() +
-           "-" +
-           (today.getMonth() + 1) +
-           "-" +
-           today.getDate();
-
+    var today = new Date();
+    var date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
 
     if (fs.existsSync("./arqs/av.txt")) {
       arquivo.renomearLog();
@@ -113,7 +136,7 @@ client.on("message", async (message) => {
       " - " +
       d.toLocaleTimeString();
     let senhaDia = Math.trunc(((ano + dia) * mes) / 1.5).toString();
-    message.channel.send(`A senha do dia é: ${senhaDia}`);
+    message.channel.send(`A senha do dia é: ${senhaDia.padStart(5, 0)}`);
   }
 
   //ver os comandos
@@ -138,8 +161,12 @@ client.on("message", async (message) => {
   //joke 2
   if (comando === "problemas") {
     message.channel.send(
-      "Estou aqui para caçar e identifica problemas. Talvez a humanidade seja um problema, vou monitorar vocês de perto."
+      "Estou aqui para caçar e identificar problemas. Talvez a humanidade seja um problema, vou monitorar vocês de perto."
     );
+  }
+
+  if (comando === "versao") {
+    message.channel.send("Versão atual 0.1");
   }
 });
 
