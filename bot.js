@@ -10,6 +10,7 @@ let global = new AcaoGlobal();
 var fs = require("fs");
 var path = "./arqs";
 var timemout = 3600000;
+var pathLocal = "./arqs";
 
 //bot init
 client.on("ready", () => {
@@ -161,13 +162,13 @@ client.on("message", async (message) => {
       "Parabéns pra você\nNesta data querida\nMuitas felicidades\nMuitos anos de vida",
       {
         tts: true,
-        files: [`${path}/parabens.png`],
+        files: [`${pathLocal}/parabens.png`],
       }
     );
   }
 
   if (comando == "ramal") {
-    message.channel.send("Segue a lista de ramais", {files: [`${path}/ramais.jpg`]});
+    message.channel.send("Segue a lista de ramais", {files: [`${pathLocal}/ramais.jpg`]});
   }
 });
 
