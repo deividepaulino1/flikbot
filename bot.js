@@ -1,17 +1,19 @@
 const GerenciarArquivo = require("./comandos/gerenciarArquivo.js");
+const AcaoGlobal = require("./comandos/global.js");
 const Discord = require("discord.js");
 const { moveMessagePortToContext } = require("worker_threads");
 const client = new Discord.Client();
 const config = require("./config.json");
-var fs = require("fs");
-
 let arquivo = new GerenciarArquivo();
+let global = new AcaoGlobal();
+
+var fs = require("fs");
+var path = "./arqs";
+var timemout = 3600000;
 
 //bot init
 client.on("ready", () => {
   console.log(`Bot iniciado, ${client.guilds.cache.size} servidor ativo`);
-  // client.user.message('Boa tarde')m,
-
   client.user.setActivity("Bug Busters 2", {
     type: "PLAYING",
     url: "https://www.djsystem.com.br",
@@ -43,33 +45,44 @@ client.on("message", async (message) => {
   //iniciar o monitoramento
   if (comando === "comecar") {
     message.channel.send("Monitoramento de testes iniciado com sucesso! 😎 ");
+
+    var date = global.getDataAtual();
     flood = setInterval(() => {
-      var today = new Date();
-      var date =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getDate();
-
-      if (fs.existsSync("./arqs/av.txt")) {
-        arquivo.renomearLog();
-
+      if (fs.existsSync(`${path}/log.html`)) {
+        arquivo.renomearLogHTML();
         message.channel.send(
           "Tá na mão, o log do último ciclo completo de testes automatizados. ",
-          { files: [`./arqs/${date}.txt`] }
+          { files: [`${path}/${date}.html`] }
         );
+        setTimeout(() => {
+          arquivo.deletarLogHTML();
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+      if (fs.existsSync(`${path}/av.txt`)) {
+        arquivo.renomearAV();
+        client.channels.cache
+          .get("984505160057384990")
+          .send("Acess violation reportado ❗❗❗", {
+            files: [`${path}/${date}.txt`],
+          });
 
         setTimeout(() => {
-          arquivo.deletarLog();
-          console.log("Aguardou 5s para o windows processar o arquivo");
+          arquivo.deletarAV();
         }, 5000);
       } else {
         message.channel.send(
           "Log ainda não está disponível, Ainda não terminou o teste "
         );
       }
-    }, 20000);
+    }, timemout);
+  }
+
+  //ver os comandos
+  if (comando === "comandos") {
+    message.channel.send(
+      " \n**!log** : Verificar todos os logs de testes do último ciclo\n\n**!av:** Verificar o último AV encontrado nos testes\n\n**!senha**: Saber a senha do dia.\n\n**!mantis** ver os casos postados no Mantis\n\n**!comecar**: Inicia o monitorammento dos logs\n\n**!parar**: Encerra o monitoramento\n\n**!ramal**: Descubra o ramal de alguém\n\n**!parabens**: Cante parabéns para alguém\n\n"
+    );
   }
 
   //parar o monitoramento
@@ -80,22 +93,16 @@ client.on("message", async (message) => {
 
   //receber um log imetiatamente
   if (comando === "log") {
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
+    var date = global.getDataAtual();
 
-    if (fs.existsSync("./arqs/av.txt")) {
-      arquivo.renomearLog();
+    if (fs.existsSync(`${path}/log.html`)) {
+      arquivo.renomearLogHTML();
       await message.channel.send(
         "Tá na mão, o log do último ciclo completo de testes automatizados. ",
-        { files: [`./arqs/${date}.txt`] }
+        { files: [`${path}/${date}.html`] }
       );
 
-      arquivo.deletarLog();
+      arquivo.deletarLogHTML();
     } else {
       message.channel.send(
         "Log ainda não está disponível, Ainda não terminou o teste "
@@ -105,45 +112,25 @@ client.on("message", async (message) => {
 
   //Verificar um Acess Violation
   if (comando === "av") {
-    message.channel.send("ÚLTIMO ERRO CRITICO DETECTADO: \n ACESS VIOLATION ", {
-      files: ["./flutter.png"],
-    });
+    var date = global.getDataAtual();
+    if (fs.existsSync(`${path}/av.txt`)) {
+      arquivo.renomearAV();
+      await message.channel.send(
+        "ÚLTIMO ERRO CRITICO DETECTADO: \n **ACESS VIOLATION** ",
+        {
+          files: [`${path}/${date}.txt`],
+        }
+      );
+      arquivo.deletarAV();
+    } else {
+      message.channel.send("Nenhum novo ACESS VIOLATION registrado ✅");
+    }
   }
 
   //Ver a senha do dia
   if (comando === "senha") {
-    const d = new Date();
-    const days = [
-      "Domingo",
-      "Segunda",
-      "Terça",
-      "Quarta",
-      "Quinta",
-      "Sexta",
-      "Sábado",
-    ];
-    let dia = d.getDate();
-    let mes = d.getMonth() + 1;
-    let ano = d.getFullYear();
-    let dataCompleta =
-      days[d.getDay()] +
-      " - " +
-      dia +
-      "/" +
-      mes +
-      "/" +
-      ano +
-      " - " +
-      d.toLocaleTimeString();
-    let senhaDia = Math.trunc(((ano + dia) * mes) / 1.5).toString();
+    senhaDia = global.calcularSenha();
     message.channel.send(`A senha do dia é: ${senhaDia.padStart(5, 0)}`);
-  }
-
-  //ver os comandos
-  if (comando === "comandos") {
-    message.channel.send(
-      " \n **!log** : Verificar todos os logs de testes do último ciclo \n\n**!av:** Verificar o último AV encontrado nos testes \n\n**!senha**: Saber a senha do dia. \n\n**!mantis** ver os casos postados no Mantis \n\n **!comecar**: Inicia o monitorammento dos logs \n\n**!parar**: Encerra o monitoramento"
-    );
   }
 
   //Status do bot
@@ -164,9 +151,23 @@ client.on("message", async (message) => {
       "Estou aqui para caçar e identificar problemas. Talvez a humanidade seja um problema, vou monitorar vocês de perto."
     );
   }
-
+  //verificar a versão atual do bot
   if (comando === "versao") {
-    message.channel.send("Versão atual 0.1");
+    message.channel.send("Versão atual 0.1, construido pela DJSYSTEM! 💙");
+  }
+
+  if (comando == "parabens") {
+    message.channel.send(
+      "Parabéns pra você\nNesta data querida\nMuitas felicidades\nMuitos anos de vida",
+      {
+        tts: true,
+        files: [`${path}/parabens.png`],
+      }
+    );
+  }
+
+  if (comando == "ramal") {
+    message.channel.send("Segue a lista de ramais", {files: [`${path}/ramais.jpg`]});
   }
 });
 

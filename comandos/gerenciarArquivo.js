@@ -1,31 +1,33 @@
+const AcaoGlobal = require("./global.js");
+var global = new AcaoGlobal();
+
+var path = './arqs'
+
 var fs = require("fs");
 
 class GerenciarArquivo {
-  renomearLog() {
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
+  renomearLogHTML() {
+    var date = global.getDataAtual();
 
-    fs.rename("./arqs/av.txt", `./arqs/${date}.txt`, function (err) {
+    fs.rename(`${path}/log.html`, `${path}/${date}.html`, function (err) {
       if (err) throw err;
       console.log("Log renomeado com data e hora atual...");
     });
   }
 
-  deletarLog() {
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
+  renomearAV() {
+    var date = global.getDataAtual();
 
-    fs.unlink(`./arqs/${date}.txt`, function (err) {
+    fs.rename(`${path}/av.txt`, `${path}/${date}.txt`, function (err) {
+      if (err) throw err;
+      console.log("AV renomeado com data e hora atual...");
+    });
+  }
+
+  deletarLogHTML() {
+    var date = global.getDataAtual();
+
+    fs.unlink(`${path}/${date}.html`, function (err) {
       if (err && err.code == "OPA DEU ERRO CAMPEAO") {
         // file doens't exist
         console.info("Talvez esse log não exista");
@@ -33,7 +35,22 @@ class GerenciarArquivo {
         // other errors, e.g. maybe we don't have enough permission
         console.error("Deu erro na hora de exlcuir o log");
       } else {
-        console.info(`Log excluido com maestria`);
+        console.info(`Log do teste apagado`);
+      }
+    });
+  }
+  deletarAV() {
+    var date = global.getDataAtual();
+
+    fs.unlink(`${path}/${date}.txt`, function (err) {
+      if (err && err.code == "OPA DEU ERRO CAMPEAO") {
+        // file doens't exist
+        console.info("Talvez esse log não exista");
+      } else if (err) {
+        // other errors, e.g. maybe we don't have enough permission
+        console.error("Deu erro na hora de exlcuir o log");
+      } else {
+        console.info(`Log do AV apagado`);
       }
     });
   }
