@@ -17,8 +17,9 @@ client.on("ready", () => {
   console.log(`Bot iniciado, ${client.guilds.cache.size} servidor ativo`);
   client.user.setActivity("Bug Busters 2", {
     type: "PLAYING",
-    url: "https://www.djsystem.com.br",
+    url: "https://www.djsystem.com.br",  
   });
+  client.channels.cache.get("984505025743183882").send("!comecar");
 });
 
 //bot entrar em sv msg
@@ -37,7 +38,6 @@ client.on("guildDelete", (guild) => {
 
 //monitorar mensagens
 client.on("message", async (message) => {
-  if (message.author.bot) return;
   if (message.channel.type === "DM") return;
 
   const args = message.content.slice(config.prefix.length).trim().split(/ + /g);
