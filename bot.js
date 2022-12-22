@@ -8,8 +8,8 @@ let arquivo = new GerenciarArquivo();
 let global = new AcaoGlobal();
 
 var fs = require("fs");
-var path = "./arqs";
-var timemout = 3600000;
+var path = "//TRUENAS/Publico/desenvolvimento/fabio/bot";
+var timemout = 1800000;
 var pathLocal = "./arqs";
 
 //bot init
@@ -49,11 +49,11 @@ client.on("message", async (message) => {
 
     var date = global.getDataAtual();
     flood = setInterval(() => {
-      if (fs.existsSync(`${path}/log.html`)) {
+      if (fs.existsSync(`${path}/log.zip`)) {
         arquivo.renomearLogHTML();
         message.channel.send(
           "Tá na mão, o log do último ciclo completo de testes automatizados. ",
-          { files: [`${path}/${date}.html`] }
+          { files: [`${path}/${date}.zip`] }
         );
         setTimeout(() => {
           arquivo.deletarLogHTML();
@@ -64,7 +64,7 @@ client.on("message", async (message) => {
         arquivo.renomearAV();
         client.channels.cache
           .get("984505160057384990")
-          .send("Acess violation reportado ❗❗❗", {
+          .send("Access violation reportado ❗❗❗", {
             files: [`${path}/${date}.txt`],
           });
 
@@ -96,11 +96,11 @@ client.on("message", async (message) => {
   if (comando === "log") {
     var date = global.getDataAtual();
 
-    if (fs.existsSync(`${path}/log.html`)) {
+    if (fs.existsSync(`${path}/log.zip`)) {
       arquivo.renomearLogHTML();
       await message.channel.send(
         "Tá na mão, o log do último ciclo completo de testes automatizados. ",
-        { files: [`${path}/${date}.html`] }
+        { files: [`${path}/${date}.zip`] }
       );
 
       arquivo.deletarLogHTML();

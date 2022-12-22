@@ -1,7 +1,7 @@
 const AcaoGlobal = require("./global.js");
 var global = new AcaoGlobal();
 
-var path = './arqs'
+var path = "C:/compartilhada/temp";
 
 var fs = require("fs");
 
