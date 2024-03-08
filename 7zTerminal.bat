@@ -1,0 +1,1 @@
+"C:\Program Files\7-Zip\7z.exe" a -tzip "C:\compartilhada\temp\logPDVTerminal.zip" "\\10.168.92.100\Publico\desenvolvimento\fabio\log_terminal\PDV\*.txt"
