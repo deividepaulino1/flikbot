@@ -55,7 +55,78 @@ client.on("message", async (message) => {
   if (comando === "iniciando") {
     var date = global.getDataAtual();
     flood = setInterval(() => {
-   
+      // Verifica se Existe Logs do PDV na maquina Servidor.
+      if (fs.existsSync(`${path}/logPDVServidor.zip`)) {
+        message.channel.send(
+          "Logs do último ciclo de testes do Servidor",
+          { files: [`${path}/logPDVServidor.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip('/logPDVServidor.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
+      // Verifica se Existe Logs do Monitor na maquina Servidor.
+      if (fs.existsSync(`${path}/logMonitorServidor.zip`)) {
+        message.channel.send(
+           "Logs do último ciclo de testes do Servidor",
+          { files: [`${path}/logMonitorServidor.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip('/logMonitorServidor.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
+      // Verifica se Existe Logs na maquina Terminal
+      if (fs.existsSync(`${path}/av.txt`)) {
+        message.channel.send(
+          "Logs do último ciclo de testes do Terminal",
+          { files: [`${path}/logTerminal.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip('/logTerminal.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
+      // Verifica se exist logs na maquina Terminal 2
+      if (fs.existsSync(`${path2}/av.txt`)) {
+        message.channel.send(
+          "Logs do último ciclo de testes do Terminal2",
+          { files: [`${path2}/logTerminal2.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip2('/logTerminal2.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
+      // Verifica se exist logs na maquina Servidor Tanca
+      if (fs.existsSync(`${path3}/av.txt`)) {
+        message.channel.send(
+          "Logs do último ciclo de testes do Servidor Tanca",
+          { files: [`${path3}/logTerminal3.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip3('/logTerminal3.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
+      // Verifica se exist logs na maquina Terminal Tanca
+      if (fs.existsSync(`${path4}/av.txt`)) {
+        message.channel.send(
+          "Logs do último ciclo de testes do Terminal Tanca",
+          { files: [`${path4}/logTerminal4.zip`] }
+        );
+        setTimeout(() => {
+          arquivo.deletarLogZip4('/logTerminal4.zip')
+          console.log("Aguardou 5s para o windows processar o arquivo");
+        }, 5000);
+      }
+
       // Verifica se Existe uma nova versão Instalada
       if (fs.existsSync(`${path}/novaVersao.txt`)) {
         message.channel.send(
@@ -115,33 +186,10 @@ client.on("message", async (message) => {
           setTimeout(() => {
             arquivo.deletarLogZip('/avServidor.txt')
           }, 5000);
-
-          if (fs.existsSync(`${path}/logPDVServidor.zip`)) {
-            message.channel.send(
-              "Logs do último ciclo de testes do Servidor",
-              { files: [`${path}/logPDVServidor.zip`] }
-            );
-            setTimeout(() => {
-              arquivo.deletarLogZip('/logPDVServidor.zip')
-              console.log("Aguardou 5s para o windows processar o arquivo");
-            }, 5000);
-          }
-    
-          // Verifica se Existe Logs do Monitor na maquina Servidor.
-          if (fs.existsSync(`${path}/logMonitorServidor.zip`)) {
-            message.channel.send(
-               "Logs do último ciclo de testes do Servidor",
-              { files: [`${path}/logMonitorServidor.zip`] }
-            );
-            setTimeout(() => {
-              arquivo.deletarLogZip('/logMonitorServidor.zip')
-              console.log("Aguardou 5s para o windows processar o arquivo");
-            }, 5000);
-          }
       }
 
       // Verifica se Existe Acess Violation na máquina Terminal
-      if (fs.existsSync(`${path}/avTerminal.txt`)) {
+      if (fs.existsSync(`${path}/avTerminal.txt`)) 
           client.channels.cache
             .get("984505160057384990")
             .send("Erros reportados na máquina Terminal", {
@@ -151,23 +199,10 @@ client.on("message", async (message) => {
           setTimeout(() => {
             arquivo.deletarLogZip('/avTerminal.txt')
           }, 5000);
-            // Verifica se Existe Logs na maquina Terminal
-      if (fs.existsSync(`${path}/logTerminal.zip`)) {
-        message.channel.send(
-          "Logs do último ciclo de testes do Terminal",
-          { files: [`${path}/logTerminal.zip`] }
-        );
-        setTimeout(() => {
-          arquivo.deletarLogZip('/logTerminal.zip')
-          console.log("Aguardou 5s para o windows processar o arquivo");
-        }, 5000);
-      
-      }
-          
-        }
+
 
       // Verifica se Existe Acess Violation na máquina Terminal
-      if (fs.existsSync(`${path2}/avTerminal2.txt`)) {
+      if (fs.existsSync(`${path2}/avTerminal2.txt`)) 
           client.channels.cache
             .get("984505160057384990")
             .send("Erros reportados na máquina Terminal2", {
@@ -177,22 +212,9 @@ client.on("message", async (message) => {
           setTimeout(() => {
             arquivo.deletarLogZip2('/avTerminal2.txt')
           }, 5000);
-          // Verifica se exist logs na maquina Terminal 2
-          if (fs.existsSync(`${path2}/logTerminal2.zip`)) {
-            message.channel.send(
-              "Logs do último ciclo de testes do Terminal2",
-              { files: [`${path2}/logTerminal2.zip`] }
-            );
-            setTimeout(() => {
-              arquivo.deletarLogZip2('/logTerminal2.zip')
-              console.log("Aguardou 5s para o windows processar o arquivo");
-            }, 5000);
-          }
-
-        }
 
       // Verifica se Existe Acess Violation no Servidor Tanca
-      if (fs.existsSync(`${path3}/avTerminal3.txt`)) {
+      if (fs.existsSync(`${path3}/avTerminal3.txt`)) 
           client.channels.cache
             .get("984505160057384990")
             .send("Erros reportados na máquina Servidor Tanca", {
@@ -202,42 +224,32 @@ client.on("message", async (message) => {
           setTimeout(() => {
             arquivo.deletarLogZip2('/avTerminal3.txt')
           }, 5000);
-           // Verifica se exist logs na maquina Servidor Tanca
-      if (fs.existsSync(`${path3}/logTerminal3.zip`)) {
-        message.channel.send(
-          "Logs do último ciclo de testes do Servidor Tanca",
-          { files: [`${path3}/logTerminal3.zip`] }
-        );
-        setTimeout(() => {
-          arquivo.deletarLogZip3('/logTerminal3.zip')
-          console.log("Aguardou 5s para o windows processar o arquivo");
-        }, 5000);
-      }
-        }
 
       // Verifica se Existe Acess Violation na máquina Terminal Tanca
-      if (fs.existsSync(`${path4}/avTerminal4.txt`)) {
+      if (fs.existsSync(`${path4}/avTerminal4.txt`)) 
           client.channels.cache
             .get("984505160057384990")
             .send("Erros reportados na máquina Terminal Tanca", {
-              files: [`${path4}/avTerminal4.txt`],
+              files: [`${path2}/avTerminal4.txt`],
             });
 
           setTimeout(() => {
-            arquivo.deletarLogZip4('/avTerminal4.txt')
+            arquivo.deletarLogZip2('/avTerminal4.txt')
           }, 5000);
 
-          // Verifica se exist logs na maquina Terminal Tanca
-      if (fs.existsSync(`${path4}/logTerminal4.zip`)) {
-        message.channel.send(
-          "Logs do último ciclo de testes do Terminal Tanca",
-          { files: [`${path4}/logTerminal4.zip`] }
-        );
-        setTimeout(() => {
-          arquivo.deletarLogZip4('/logTerminal4.zip')
-          console.log("Aguardou 5s para o windows processar o arquivo");
-        }, 5000);
-      }
+      // Verifica se Existe Acess Violation no Regime MEI
+
+      if (fs.existsSync(`${path}/avMei.txt`)) {
+          client.channels.cache
+            .get("984505160057384990")
+            .send("Erros reportados no Regime MEI", {
+              files: [`${path}/avMei.txt`],
+            });
+
+          setTimeout(() => {
+            arquivo.deletarLogZip('/avMei.txt')
+
+          }, 5000);
         }
     }, timemout);
   }

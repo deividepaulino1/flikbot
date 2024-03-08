@@ -4,6 +4,8 @@ const Monitoramento = require ("../bot.js")
 
 var path = "C:/compartilhada/temp";
 var path2 = "C:/compartilhada/temp2";
+var path3 = "C:/compartilhada/temp3";
+var path4 = "C:/compartilhada/temp4";
 
 var fs = require("fs");
 
@@ -64,6 +66,40 @@ class GerenciarArquivo {
     var date = global.getDataAtual();
 
     fs.unlink(`${path2}/${arquive}`, function (err) {
+      if (err && err.code == "OPA DEU ERRO CAMPEAO") {
+        // file doens't exist
+        console.info("Talvez esse log não exista");
+      } else if (err) {
+        // other errors, e.g. maybe we don't have enough permission
+        console.error("Deu erro na hora de excluir o log");
+      } else {
+        console.info(`Log do teste apagado`);
+      }
+    });
+    
+  }
+
+  deletarLogZip3(arquive) {
+    var date = global.getDataAtual();
+
+    fs.unlink(`${path3}/${arquive}`, function (err) {
+      if (err && err.code == "OPA DEU ERRO CAMPEAO") {
+        // file doens't exist
+        console.info("Talvez esse log não exista");
+      } else if (err) {
+        // other errors, e.g. maybe we don't have enough permission
+        console.error("Deu erro na hora de excluir o log");
+      } else {
+        console.info(`Log do teste apagado`);
+      }
+    });
+    
+  }
+
+  deletarLogZip4(arquive) {
+    var date = global.getDataAtual();
+
+    fs.unlink(`${path4}/${arquive}`, function (err) {
       if (err && err.code == "OPA DEU ERRO CAMPEAO") {
         // file doens't exist
         console.info("Talvez esse log não exista");
